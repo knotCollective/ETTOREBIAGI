@@ -1,13 +1,14 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { url } from '../../utils/url';
 
 const releases = [
-  { mark: '_ ||||||', href: 'https://knot1.bandcamp.com/album/--6' },
-  { mark: '_ |||||', href: 'https://knot1.bandcamp.com/album/--5' },
-  { mark: '_ ||||', href: 'https://knot1.bandcamp.com/album/--4' },
-  { mark: '_|||', href: 'https://knot1.bandcamp.com/album/--3' },
-  { mark: '_||', href: 'https://knot1.bandcamp.com/album/--2' },
-  { mark: '_|', href: 'https://knot1.bandcamp.com/album/-' },
+  { mark: '_ ||||||', href: 'https://knot1.bandcamp.com/album/--6', cover: 'images/knot-6.jpg' },
+  { mark: '_ |||||', href: 'https://knot1.bandcamp.com/album/--5', cover: 'images/knot-5.jpg' },
+  { mark: '_ ||||', href: 'https://knot1.bandcamp.com/album/--4', cover: 'images/knot-4.jpg' },
+  { mark: '_|||', href: 'https://knot1.bandcamp.com/album/--3', cover: 'images/knot-3.jpg' },
+  { mark: '_||', href: 'https://knot1.bandcamp.com/album/--2', cover: 'images/knot-2.jpg' },
+  { mark: '_|', href: 'https://knot1.bandcamp.com/album/-', cover: 'images/knot-1.jpg' },
 ];
 ---
 
@@ -35,6 +36,9 @@ const releases = [
       releases.map((release) => (
         <li>
           <a href={release.href} target="_blank" rel="noopener">
+            <span class="cover">
+              <img src={url(release.cover)} alt={`knot release ${release.mark.trim()}`} loading="lazy" />
+            </span>
             <span class="mark">{release.mark}</span>
             <span class="arrow">→</span>
           </a>
@@ -73,16 +77,36 @@ const releases = [
   .releases a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 16px;
-    padding: 12px 2px;
+    padding: 10px 2px;
   }
 
   .releases a:hover {
     text-decoration: none;
   }
 
+  .cover {
+    flex: none;
+    width: 56px;
+    aspect-ratio: 1;
+    background: #f2f2f2;
+    overflow: hidden;
+  }
+
+  .cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .releases a:hover .cover img {
+    transform: scale(1.05);
+  }
+
   .mark {
+    flex: 1;
     white-space: pre;
     font-weight: 700;
     letter-spacing: 0.06em;
