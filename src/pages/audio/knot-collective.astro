@@ -29,6 +29,11 @@ const releases = [
       half-built instruments, objects and bodies become sonically merged, we
       like to get lost in a rhizome of our own doing.
     </p>
+    <p>
+      <a class="site-link" href="https://www.knotcollective.at/" target="_blank" rel="noopener">
+        knotcollective.at ↗
+      </a>
+    </p>
   </div>
 
   <ul class="releases">
@@ -57,6 +62,17 @@ const releases = [
   .intro p {
     margin-bottom: 1em;
     color: #2b2b2b;
+  }
+
+  .site-link {
+    border-bottom: 1px solid var(--faint);
+    padding-bottom: 1px;
+    transition: border-color 0.2s ease;
+  }
+
+  .site-link:hover {
+    text-decoration: none;
+    border-color: var(--fg);
   }
 
   .releases {
