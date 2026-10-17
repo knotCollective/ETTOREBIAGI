@@ -1,16 +1,149 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+
+const videos = [
+  {
+    id: 'w3cnq4QJnKU',
+    title: 'Michael Jarrell — Assonance',
+    with: 'ensemble Codec',
+  },
+  {
+    id: 'l2qpQ89Ya1I',
+    title: 'James Dashow — Effetti collaterali',
+    with: 'ensemble Codec',
+  },
+  {
+    id: 'IyTdIi0imEQ',
+    title: 'Mario Davidovsky — Synchronisms No. 12',
+    with: 'ensemble Codec',
+  },
+  {
+    id: 'HDTjrSlteg8',
+    title: 'György Kurtág — In Nomine all’ongherese',
+    with: 'ensemble Codec',
+  },
+  {
+    id: 'KA0eNo2rh2A',
+    title: 'Bruno Mantovani — “Bug”',
+    with: 'Ettore Biagi',
+  },
+  {
+    id: 'l5m-M8wABaY',
+    title: 'Cosimo Carovani — [Momentum I]',
+    with: 'Ettore Biagi',
+  },
+  {
+    id: 'bXa4PsDxaDE',
+    title: 'Olivier Messiaen — Abîme des Oiseaux',
+    with: 'Ettore Biagi',
+  },
+  {
+    id: '4Snc7_B6tp4',
+    title: 'G. Rossini — “Ah quel giorno ognor rammento” from Semiramide',
+    with: 'Concert Variation by Ettore Biagi',
+  },
+  {
+    id: 'tYTFgLdtvJY',
+    title: 'G. Rossini — “Giusto Ciel, in tal periglio” from L’Assedio di Corinto',
+    with: 'Variations by Ettore Biagi',
+  },
+];
 ---
 
 <PageLayout title="interpretation" parent="audio" parentHref="#audio">
-  <div class="block">
-    <p class="lead">interpretation — embedded links</p>
-    <p class="placeholder">Embedded links coming soon.</p>
-  </div>
+  <ul class="videos">
+    {
+      videos.map((video) => (
+        <li>
+          <div class="caption">
+            <span class="index" aria-hidden="true" />
+            <h2 class="vtitle">{video.title}</h2>
+            <span class="with">{video.with}</span>
+            <a
+              class="external"
+              href={`https://youtu.be/${video.id}`}
+              target="_blank"
+              rel="noopener"
+              aria-label={`Open ${video.title} on YouTube`}
+            >
+              ↗
+            </a>
+          </div>
+          <div class="player">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+              title={video.title}
+              loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            />
+          </div>
+        </li>
+      ))
+    }
+  </ul>
 </PageLayout>
 
 <style>
-  .lead {
-    margin-bottom: 24px;
+  .videos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(28px, 5vh, 48px);
+  }
+
+  .caption {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .index {
+    display: none;
+  }
+
+  .vtitle {
+    font-size: inherit;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    flex: 1;
+  }
+
+  .with {
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .external {
+    color: var(--faint);
+  }
+
+  .external:hover {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    width: 100%;
+  }
+
+  .player iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 700px) {
+    .with {
+      display: none;
+    }
   }
 </style>
