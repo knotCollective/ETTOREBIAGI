@@ -1,7 +1,68 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { url } from '../../utils/url';
+
+const video = {
+  src: 'videos/sonic-machines-demo.mp4',
+  poster: 'videos/sonic-machines-demo-poster.jpg',
+  title: 'Sonic Machines, demo',
+  note: 'kilele application — rendering',
+};
 ---
 
 <PageLayout title="3d animation" parent="visual" parentHref="#visual">
-  <p class="placeholder">Works coming soon.</p>
+  <div class="video">
+    <div class="caption">
+      <h2 class="vtitle">{video.title}</h2>
+      <span class="note">{video.note}</span>
+    </div>
+    <video
+      class="player"
+      controls
+      playsinline
+      preload="metadata"
+      poster={url(video.poster)}
+    >
+      <source src={url(video.src)} type="video/mp4" />
+    </video>
+  </div>
 </PageLayout>
+
+<style>
+  .video {
+    max-width: 760px;
+  }
+
+  .caption {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .vtitle {
+    font-size: inherit;
+    font-weight: 400;
+    flex: 1;
+  }
+
+  .note {
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .player {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1280 / 540;
+    background: #000;
+    object-fit: contain;
+  }
+
+  @media (max-width: 700px) {
+    .note {
+      display: none;
+    }
+  }
+</style>
