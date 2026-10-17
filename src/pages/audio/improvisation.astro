@@ -1,28 +1,76 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { url } from '../../utils/url';
+
+const releases = [
+  {
+    code: '//ex',
+    desc: 'clarinet and live electronics',
+    href: 'https://ettorebiagi.bandcamp.com/track/ex',
+    cover: 'images/bc-ex.jpg',
+  },
+  {
+    code: 'volumen',
+    desc: 'clarinet, objects and live electronics',
+    href: 'https://ettorebiagi.bandcamp.com/album/volumen',
+    cover: 'images/bc-volumen.jpg',
+  },
+];
+
+const video = {
+  id: '5g1-l791dRM',
+  title: 'Arvo Pärt Center — Solo, November 2023',
+};
 ---
 
 <PageLayout title="improvisation" parent="audio" parentHref="#audio">
   <section class="release-group">
     <h2 class="group-title">LATEST</h2>
     <ul class="releases">
-      <li>
-        <a href="https://ettorebiagi.bandcamp.com/track/ex" target="_blank" rel="noopener">
-          <span class="code">//ex</span>
-          <span class="rule" aria-hidden="true"></span>
-          <span class="desc">clarinet and live electronics</span>
-          <span class="arrow">→</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://ettorebiagi.bandcamp.com/album/volumen" target="_blank" rel="noopener">
-          <span class="code">volumen</span>
-          <span class="rule" aria-hidden="true"></span>
-          <span class="desc">clarinet, objects and live electronics</span>
-          <span class="arrow">→</span>
-        </a>
-      </li>
+      {
+        releases.map((release) => (
+          <li>
+            <a href={release.href} target="_blank" rel="noopener">
+              <span class="cover">
+                <img src={url(release.cover)} alt={`${release.code} cover`} loading="lazy" />
+              </span>
+              <span class="meta">
+                <span class="code">{release.code}</span>
+                <span class="desc">{release.desc}</span>
+                <span class="listen">listen on bandcamp ↗</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
     </ul>
+  </section>
+
+  <section class="release-group">
+    <h2 class="group-title">VIDEO</h2>
+    <div class="video">
+      <div class="caption">
+        <h3 class="vtitle">{video.title}</h3>
+        <a
+          class="external"
+          href={`https://youtu.be/${video.id}`}
+          target="_blank"
+          rel="noopener"
+          aria-label={`Open ${video.title} on YouTube`}
+        >
+          ↗
+        </a>
+      </div>
+      <div class="player">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+          title={video.title}
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        />
+      </div>
+    </div>
   </section>
 </PageLayout>
 
@@ -36,29 +84,60 @@ import PageLayout from '../../layouts/PageLayout.astro';
     margin-bottom: 16px;
   }
 
+  .release-group + .release-group {
+    margin-top: clamp(36px, 6vh, 64px);
+  }
+
   .releases {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 640px;
   }
 
   .releases li {
     border-top: 1px solid var(--line);
   }
 
-  .releases li:last-child {
-    border-bottom: 1px solid var(--line);
-  }
-
   .releases a {
     display: flex;
-    align-items: baseline;
-    gap: 12px;
-    padding: 16px 0;
+    gap: 14px;
+    padding: 14px 0;
+    align-items: flex-start;
   }
 
   .releases a:hover {
     text-decoration: none;
+  }
+
+  .cover {
+    flex: none;
+    width: 84px;
+    aspect-ratio: 1;
+    background: #f2f2f2;
+    overflow: hidden;
+  }
+
+  .cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .releases a:hover .cover img {
+    transform: scale(1.04);
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 2px;
   }
 
   .code {
@@ -66,25 +145,21 @@ import PageLayout from '../../layouts/PageLayout.astro';
     white-space: nowrap;
   }
 
-  .rule {
-    flex: 1;
-    border-bottom: 1px dotted var(--faint);
-    transform: translateY(-3px);
-  }
-
   .desc {
-    color: var(--muted);
-    text-align: right;
+    color: #2b2b2b;
+    font-size: 12px;
   }
 
-  .arrow {
+  .listen {
     color: var(--faint);
-    transition: transform 0.2s ease, color 0.2s ease;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+    transition: color 0.2s ease;
   }
 
-  .releases a:hover .arrow {
+  .releases a:hover .listen {
     color: var(--fg);
-    transform: translateX(3px);
   }
 
   .releases a:hover .code {
@@ -92,18 +167,50 @@ import PageLayout from '../../layouts/PageLayout.astro';
     text-underline-offset: 3px;
   }
 
+  .video {
+    max-width: 640px;
+  }
+
+  .caption {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .vtitle {
+    font-size: inherit;
+    font-weight: 400;
+    flex: 1;
+  }
+
+  .external {
+    color: var(--faint);
+  }
+
+  .external:hover {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    width: 100%;
+  }
+
+  .player iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   @media (max-width: 700px) {
-    .releases a {
-      flex-wrap: wrap;
-    }
-
-    .rule {
-      display: none;
-    }
-
-    .desc {
-      flex-basis: 100%;
-      text-align: left;
+    .releases {
+      grid-template-columns: 1fr;
     }
   }
 </style>
