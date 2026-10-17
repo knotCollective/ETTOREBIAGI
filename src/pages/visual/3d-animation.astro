@@ -8,6 +8,15 @@ const video = {
   title: 'Sonic Machines, demo',
   note: 'kilele application — rendering',
 };
+
+const stills = [
+  'images/sonic-machines-01.jpg',
+  'images/sonic-machines-02.jpg',
+  'images/sonic-machines-03.jpg',
+  'images/sonic-machines-04.jpg',
+  'images/sonic-machines-05.jpg',
+  'images/sonic-machines-06.jpg',
+];
 ---
 
 <PageLayout title="3d animation" parent="visual" parentHref="#visual">
@@ -26,6 +35,25 @@ const video = {
       <source src={url(video.src)} type="video/mp4" />
     </video>
   </div>
+
+  <section class="stills">
+    <h3 class="stills-title">renders</h3>
+    <ul>
+      {
+        stills.map((still, i) => (
+          <li>
+            <a href={url(still)} target="_blank" rel="noopener">
+              <img
+                src={url(still)}
+                alt={`Sonic Machines render ${i + 1}`}
+                loading="lazy"
+              />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </PageLayout>
 
 <style>
@@ -60,9 +88,56 @@ const video = {
     object-fit: contain;
   }
 
+  .stills {
+    margin-top: clamp(40px, 7vh, 72px);
+    max-width: 760px;
+  }
+
+  .stills-title {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .stills ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stills img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+
+  .stills a {
+    display: block;
+    overflow: hidden;
+  }
+
+  .stills a img {
+    transition: transform 0.5s ease;
+  }
+
+  .stills a:hover img {
+    transform: scale(1.03);
+  }
+
   @media (max-width: 700px) {
     .note {
       display: none;
+    }
+
+    .stills ul {
+      grid-template-columns: 1fr;
     }
   }
 </style>
