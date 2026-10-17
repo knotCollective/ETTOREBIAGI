@@ -1,0 +1,130 @@
+---
+import type { Domain } from '../data/site';
+import { url } from '../utils/url';
+
+interface Props {
+  domain: Domain;
+}
+
+const { domain } = Astro.props;
+---
+
+<section class="column" id={domain.id} aria-label={domain.label}>
+  <div class="column-inner">
+    <header class="head">
+      <h2 class="label">{domain.label}</h2>
+      <p class="kicker">{domain.kicker}</p>
+    </header>
+
+    <div class="reveal" aria-hidden="true"></div>
+
+    <nav class="links">
+      <ul>
+        {
+          domain.links.map((link) => (
+            <li>
+              <a href={url(link.href)}>
+                <span class="mark">↳</span>
+                <span class="text">{link.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<style>
+  .column {
+    height: 100%;
+    overflow-y: auto;
+    border-left: 1px solid var(--line);
+    scrollbar-width: thin;
+  }
+
+  .column-inner {
+    padding: var(--pad);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .head {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding-bottom: 12px;
+    z-index: 2;
+  }
+
+  .label {
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .kicker {
+    color: var(--faint);
+    font-size: 11px;
+    margin-top: 4px;
+  }
+
+  .reveal {
+    height: 46vh;
+    flex: none;
+  }
+
+  .links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .links li {
+    border-top: 1px solid var(--line);
+  }
+
+  .links li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .links a {
+    display: flex;
+    gap: 10px;
+    padding: 12px 0;
+    align-items: baseline;
+  }
+
+  .links a:hover {
+    text-decoration: none;
+  }
+
+  .mark {
+    color: var(--faint);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .links a:hover .mark {
+    color: var(--fg);
+    transform: translateX(3px);
+  }
+
+  .links a:hover .text {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .column {
+      height: auto;
+      overflow: visible;
+      border-left: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .reveal {
+      height: 8vh;
+    }
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import DomainColumn from '../components/DomainColumn.astro';
+import { domains } from '../data/site';
+---
+
+<Base title="Ettore Biagi — bad pure">
+  <main class="home">
+    <div class="pane sidebar-pane">
+      <Sidebar />
+    </div>
+    {
+      domains.map((domain) => (
+        <div class="pane column-pane">
+          <DomainColumn domain={domain} />
+        </div>
+      ))
+    }
+  </main>
+</Base>
+
+<style>
+  .home {
+    display: grid;
+    grid-template-columns: minmax(300px, 1.15fr) 1fr 1fr 1fr;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .pane {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .sidebar-pane {
+    border-right: 1px solid var(--line);
+  }
+
+  @media (max-width: 900px) {
+    .home {
+      grid-template-columns: 1fr;
+      height: auto;
+      overflow: visible;
+    }
+
+    .pane {
+      height: auto;
+    }
+  }
+</style>

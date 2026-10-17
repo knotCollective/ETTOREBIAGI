@@ -1,0 +1,99 @@
+---
+import Base from './Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { base } from '../utils/url';
+
+interface Props {
+  title: string;
+  parent: string;
+  parentHref: string;
+}
+
+const { title, parent, parentHref } = Astro.props;
+---
+
+<Base title={`${title} — Ettore Biagi`}>
+  <main class="page">
+    <div class="pane sidebar-pane">
+      <Sidebar />
+    </div>
+    <div class="pane content-pane">
+      <div class="content">
+        <nav class="breadcrumb">
+          <a href={`${base}${parentHref}`}>← {parent}</a>
+          <span class="sep">/</span>
+          <span class="current">{title}</span>
+        </nav>
+        <h1 class="title">{title}</h1>
+        <slot />
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .page {
+    display: grid;
+    grid-template-columns: minmax(300px, 1.15fr) 3fr;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .pane {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .sidebar-pane {
+    border-right: 1px solid var(--line);
+  }
+
+  .content-pane {
+    overflow-y: auto;
+  }
+
+  .content {
+    padding: var(--pad);
+    max-width: 74ch;
+  }
+
+  .breadcrumb {
+    color: var(--muted);
+    font-size: 11px;
+    display: flex;
+    gap: 8px;
+    margin-bottom: clamp(28px, 6vh, 72px);
+  }
+
+  .breadcrumb .sep {
+    color: var(--faint);
+  }
+
+  .breadcrumb .current {
+    color: var(--fg);
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-bottom: 26px;
+  }
+
+  @media (max-width: 900px) {
+    .page {
+      grid-template-columns: 1fr;
+      height: auto;
+      overflow: visible;
+    }
+
+    .pane {
+      height: auto;
+    }
+
+    .content-pane {
+      overflow: visible;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

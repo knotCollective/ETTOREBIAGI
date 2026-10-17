@@ -1,0 +1,105 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const releases = [
+  { mark: '_ ||||||', href: 'https://knot1.bandcamp.com/album/--6' },
+  { mark: '_ |||||', href: 'https://knot1.bandcamp.com/album/--5' },
+  { mark: '_ ||||', href: 'https://knot1.bandcamp.com/album/--4' },
+  { mark: '_|||', href: 'https://knot1.bandcamp.com/album/--3' },
+  { mark: '_||', href: 'https://knot1.bandcamp.com/album/--2' },
+  { mark: '_|', href: 'https://knot1.bandcamp.com/album/-' },
+];
+---
+
+<PageLayout title="knot collective" parent="audio" parentHref="#audio">
+  <div class="intro">
+    <p>
+      knot is composed of a writer, a clarinetist/visual artist/poet, a
+      percussionist/sound artist and a composer/rapper. Our practice is based on
+      instrumental electro-acoustic improvisation, spoken poetry, freestyle rap,
+      field recordings and sampling. knot's performances encompass interrupted
+      reportage and a form of multilingual speculative storytelling, exploring
+      the counterpoint of factual and virtual.
+    </p>
+    <p>
+      The continuous releases are sonic documentaries from our sessions, tracing
+      the process of mutation that our setup and tools undergo. Around a single
+      table in a small studio, where computers, mixers, speakers, cables,
+      half-built instruments, objects and bodies become sonically merged, we
+      like to get lost in a rhizome of our own doing.
+    </p>
+  </div>
+
+  <ul class="releases">
+    {
+      releases.map((release) => (
+        <li>
+          <a href={release.href} target="_blank" rel="noopener">
+            <span class="mark">{release.mark}</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>
+
+<style>
+  .intro {
+    max-width: 68ch;
+    margin-bottom: clamp(32px, 6vh, 64px);
+  }
+
+  .intro p {
+    margin-bottom: 1em;
+    color: #2b2b2b;
+  }
+
+  .releases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 420px;
+  }
+
+  .releases li {
+    border-top: 1px solid var(--line);
+  }
+
+  .releases li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .releases a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 2px;
+  }
+
+  .releases a:hover {
+    text-decoration: none;
+  }
+
+  .mark {
+    white-space: pre;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .arrow {
+    color: var(--faint);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .releases a:hover .arrow {
+    color: var(--fg);
+    transform: translateX(3px);
+  }
+
+  .releases a:hover .mark {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>
