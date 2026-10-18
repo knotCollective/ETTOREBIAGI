@@ -275,6 +275,28 @@ const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
     border-color: rgba(255, 255, 255, 0.4);
   }
 
+  .column.has-gallery .links a {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    border-radius: 2px;
+  }
+
+  .column.has-gallery .links a:hover {
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .column.has-gallery .links a:hover .text,
+  .column.has-gallery .links a:hover .mark {
+    color: var(--fg);
+    text-shadow: none;
+  }
+
+  .column.has-gallery .links a:hover .mark {
+    transform: translateX(3px);
+  }
+
   @media (max-width: 900px) {
     .column {
       height: auto;
