@@ -54,8 +54,8 @@ const thousandStills = [
 ];
 ---
 
-<PageLayout title="3d animation" parent="visual" parentHref="#visual">
-  <section class="project">
+<PageLayout title="3d animation" parent="visual" parentHref="#visual" wide>
+  <section class="project project--aq">
     <h2 class="project-title">
       A thousand questions hit my eyes from the inside
     </h2>
@@ -110,47 +110,52 @@ const thousandStills = [
     </section>
   </section>
 
-  <div class="video">
-    <div class="caption">
-      <h2 class="vtitle">{video.title}</h2>
-      <span class="note">{video.note}</span>
+  <section class="project">
+    <h2 class="project-title">Sonic Machines</h2>
+    <p class="project-desc">
+      badpure collaborates with composers and performers to realize sound-driven
+      audiovisual works. Sonic Machines is part of an ongoing collaboration with
+      Alessandro Baticci (alias DUSKND) and it encompasses 3d animation, Machine
+      Learning and audiovisual improvisation.
+    </p>
+
+    <div class="project-media">
+      <div class="video project-video">
+        <div class="caption">
+          <h3 class="vtitle">{video.title}</h3>
+          <span class="note">{video.note}</span>
+        </div>
+        <video
+          class="player"
+          controls
+          playsinline
+          preload="metadata"
+          poster={url(video.poster)}
+        >
+          <source src={url(video.src)} type="video/mp4" />
+        </video>
+      </div>
     </div>
-    <video
-      class="player"
-      controls
-      playsinline
-      preload="metadata"
-      poster={url(video.poster)}
-    >
-      <source src={url(video.src)} type="video/mp4" />
-    </video>
-  </div>
 
-  <section class="stills">
-    <h3 class="stills-title">renders</h3>
-    <ul>
-      {
-        stills.map((still, i) => (
-          <li>
-            <a href={url(still)} target="_blank" rel="noopener">
-              <img
-                src={url(still)}
-                alt={`Sonic Machines render ${i + 1}`}
-                loading="lazy"
-              />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <section class="stills project-stills">
+      <h3 class="stills-title">renders</h3>
+      <ul>
+        {
+          stills.map((still, i) => (
+            <li>
+              <a href={url(still)} target="_blank" rel="noopener">
+                <img
+                  src={url(still)}
+                  alt={`Sonic Machines render ${i + 1}`}
+                  loading="lazy"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </section>
-
-  <p slot="aside">
-    badpure collaborates with composers and performers to realize sound-driven
-    audiovisual works. Sonic Machines is part of an ongoing collaboration with
-    Alessandro Baticci (alias DUSKND) and it encompasses 3d animation, Machine
-    Learning and audiovisual improvisation.
-  </p>
 </PageLayout>
 
 <style>
@@ -181,7 +186,7 @@ const thousandStills = [
     margin-top: clamp(24px, 4vh, 40px);
   }
 
-  .project-video .player {
+  .project--aq .project-video .player {
     aspect-ratio: 3456 / 2162;
   }
 

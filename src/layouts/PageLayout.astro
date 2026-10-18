@@ -7,10 +7,12 @@ interface Props {
   title: string;
   parent: string;
   parentHref: string;
+  wide?: boolean;
 }
 
-const { title, parent, parentHref } = Astro.props;
+const { title, parent, parentHref, wide = false } = Astro.props;
 const hasAside = Astro.slots.has('aside');
+const contentWide = wide || hasAside;
 ---
 
 <Base title={`${title} — Ettore Biagi`}>
@@ -19,7 +21,7 @@ const hasAside = Astro.slots.has('aside');
       <Sidebar />
     </div>
     <div class="pane content-pane">
-      <div class:list={['content', hasAside && 'content-wide']}>
+      <div class:list={['content', contentWide && 'content-wide']}>
         <nav class="breadcrumb">
           <a href={`${base}${parentHref}`}>← {parent}</a>
           <span class="sep">/</span>
