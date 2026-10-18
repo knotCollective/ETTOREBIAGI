@@ -20,6 +20,20 @@ const stills = [
 ---
 
 <PageLayout title="3d animation" parent="visual" parentHref="#visual">
+  <section class="project">
+    <h2 class="project-title">
+      A thousand questions hit my eyes from the inside
+    </h2>
+    <p class="project-desc">
+      "A thousand questions hit my eyes from the inside" is an audiovisual
+      project that combines electroacoustic improvisation and digital processing
+      of live paintings. Through a bridging between OpenFrameworks and
+      Supercollider I created sound-driven live processing of painting gestures,
+      signs and drawings through the eyes of a webcam that looks at its on
+      renderings in real time.
+    </p>
+  </section>
+
   <div class="video">
     <div class="caption">
       <h2 class="vtitle">{video.title}</h2>
@@ -64,6 +78,25 @@ const stills = [
 </PageLayout>
 
 <style>
+  .project {
+    max-width: 760px;
+    margin-bottom: clamp(40px, 7vh, 72px);
+  }
+
+  .project-title {
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+  }
+
+  .project-desc {
+    color: #2b2b2b;
+    font-size: 12px;
+    line-height: 1.7;
+    max-width: 62ch;
+  }
+
   .video {
     max-width: 760px;
   }
