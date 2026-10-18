@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { title, parent, parentHref } = Astro.props;
+const hasAside = Astro.slots.has('aside');
 ---
 
 <Base title={`${title} — Ettore Biagi`}>
@@ -18,14 +19,27 @@ const { title, parent, parentHref } = Astro.props;
       <Sidebar />
     </div>
     <div class="pane content-pane">
-      <div class="content">
+      <div class:list={['content', hasAside && 'content-wide']}>
         <nav class="breadcrumb">
           <a href={`${base}${parentHref}`}>← {parent}</a>
           <span class="sep">/</span>
           <span class="current">{title}</span>
         </nav>
         <h1 class="title">{title}</h1>
-        <slot />
+        {
+          hasAside ? (
+            <div class="body has-aside">
+              <div class="main">
+                <slot />
+              </div>
+              <aside class="aside">
+                <slot name="aside" />
+              </aside>
+            </div>
+          ) : (
+            <slot />
+          )
+        }
       </div>
     </div>
   </main>
@@ -55,6 +69,25 @@ const { title, parent, parentHref } = Astro.props;
   .content {
     padding: var(--pad);
     max-width: 74ch;
+  }
+
+  .content-wide {
+    max-width: 1180px;
+  }
+
+  .body.has-aside {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 300px);
+    gap: clamp(28px, 4vw, 64px);
+    align-items: start;
+  }
+
+  .aside {
+    position: sticky;
+    top: var(--pad);
+    font-size: 12px;
+    line-height: 1.7;
+    color: #2b2b2b;
   }
 
   .breadcrumb {
@@ -94,6 +127,16 @@ const { title, parent, parentHref } = Astro.props;
     .content-pane {
       overflow: visible;
       border-top: 1px solid var(--line);
+    }
+
+    .body.has-aside {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .aside {
+      position: static;
+      max-width: 60ch;
     }
   }
 </style>
