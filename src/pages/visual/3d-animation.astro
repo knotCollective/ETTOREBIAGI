@@ -17,6 +17,41 @@ const stills = [
   'images/sonic-machines-05.jpg',
   'images/sonic-machines-06.jpg',
 ];
+
+const thousandVideos = [
+  {
+    src: 'videos/thousand-questions-recording.mp4',
+    poster: 'videos/thousand-questions-recording-poster.jpg',
+    title: 'A thousand questions hit my eyes from the inside — recording',
+    note: '7:09',
+  },
+  {
+    src: 'videos/thousand-questions-demo-2.mp4',
+    poster: 'videos/thousand-questions-demo-2-poster.jpg',
+    title: 'demo 2',
+    note: '4:19',
+  },
+  {
+    src: 'videos/thousand-questions-demo-3.mp4',
+    poster: 'videos/thousand-questions-demo-3-poster.jpg',
+    title: 'demo 3',
+    note: '0:27',
+  },
+  {
+    src: 'videos/thousand-questions-demo-4.mp4',
+    poster: 'videos/thousand-questions-demo-4-poster.jpg',
+    title: 'demo 4',
+    note: '0:52',
+  },
+];
+
+const thousandStills = [
+  'images/thousand-questions-01.jpg',
+  'images/thousand-questions-02.jpg',
+  'images/thousand-questions-03.jpg',
+  'images/thousand-questions-04.jpg',
+  'images/thousand-questions-05.jpg',
+];
 ---
 
 <PageLayout title="3d animation" parent="visual" parentHref="#visual">
@@ -32,6 +67,47 @@ const stills = [
       signs and drawings through the eyes of a webcam that looks at its on
       renderings in real time.
     </p>
+
+    <div class="project-media">
+      {
+        thousandVideos.map((vid) => (
+          <div class="video project-video">
+            <div class="caption">
+              <h3 class="vtitle">{vid.title}</h3>
+              <span class="note">{vid.note}</span>
+            </div>
+            <video
+              class="player"
+              controls
+              playsinline
+              preload="metadata"
+              poster={url(vid.poster)}
+            >
+              <source src={url(vid.src)} type="video/mp4" />
+            </video>
+          </div>
+        ))
+      }
+    </div>
+
+    <section class="stills project-stills">
+      <h3 class="stills-title">stills</h3>
+      <ul>
+        {
+          thousandStills.map((still, i) => (
+            <li>
+              <a href={url(still)} target="_blank" rel="noopener">
+                <img
+                  src={url(still)}
+                  alt={`A thousand questions hit my eyes from the inside still ${i + 1}`}
+                  loading="lazy"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </section>
 
   <div class="video">
@@ -95,6 +171,18 @@ const stills = [
     font-size: 12px;
     line-height: 1.7;
     max-width: 62ch;
+  }
+
+  .project-media {
+    margin-top: clamp(24px, 4vh, 40px);
+  }
+
+  .project-video + .project-video {
+    margin-top: clamp(24px, 4vh, 40px);
+  }
+
+  .project-video .player {
+    aspect-ratio: 3456 / 2162;
   }
 
   .video {
