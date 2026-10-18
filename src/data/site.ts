@@ -21,6 +21,7 @@ export interface Domain {
   label: string;
   kicker: string;
   links: DomainLink[];
+  hoverImages?: string[];
 }
 
 export const domains: Domain[] = [
@@ -43,6 +44,23 @@ export const domains: Domain[] = [
       { label: 'hand-drawings', href: 'visual/hand-drawings' },
       { label: 'paintings', href: 'visual/paintings' },
       { label: '3d animation', href: 'visual/3d-animation' },
+    ],
+    hoverImages: [
+      'images/home/hands-01.jpg',
+      'images/home/hands-02.jpg',
+      'images/home/hands-03.jpg',
+      'images/home/hands-04.jpg',
+      'images/home/hands-05.jpg',
+      'images/home/minerals-01.jpg',
+      'images/home/minerals-02.jpg',
+      'images/home/minerals-03.jpg',
+      'images/home/minerals-04.jpg',
+      'images/home/minerals-05.jpg',
+      'images/home/faces-01.jpg',
+      'images/home/faces-02.jpg',
+      'images/home/faces-03.jpg',
+      'images/home/thousand-01.jpg',
+      'images/home/thousand-02.jpg',
     ],
   },
   {

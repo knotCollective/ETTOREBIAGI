@@ -7,9 +7,24 @@ interface Props {
 }
 
 const { domain } = Astro.props;
+const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
 ---
 
-<section class="column" id={domain.id} aria-label={domain.label}>
+<section
+  class:list={['column', gallery && 'has-gallery']}
+  id={domain.id}
+  aria-label={domain.label}
+  data-tone="light"
+>
+  {
+    gallery && (
+      <div class="gallery" data-gallery data-images={JSON.stringify(gallery)}>
+        <img src={gallery[0]} alt="" class="is-active" />
+        <img alt="" />
+      </div>
+    )
+  }
+
   <div class="column-inner">
     <header class="head">
       <h2 class="label">{domain.label}</h2>
@@ -34,6 +49,82 @@ const { domain } = Astro.props;
     </nav>
   </div>
 </section>
+
+<script>
+  function initGallery() {
+    const column = document.querySelector<HTMLElement>('.column.has-gallery');
+    if (!column) return;
+    const gallery = column.querySelector<HTMLElement>('[data-gallery]');
+    if (!gallery) return;
+
+    let images: string[] = [];
+    try {
+      images = JSON.parse(gallery.dataset.images || '[]');
+    } catch {
+      return;
+    }
+    if (images.length < 2) return;
+
+    const layers = Array.from(gallery.querySelectorAll<HTMLImageElement>('img'));
+    let active = 0;
+    let current = 0;
+
+    const tone = (image: HTMLImageElement) => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        ctx.drawImage(image, 0, 0, 32, 32);
+        const { data } = ctx.getImageData(0, 0, 32, 32);
+        let sum = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          sum += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+        }
+        const luminance = sum / (data.length / 4) / 255;
+        column.dataset.tone = luminance < 0.45 ? 'dark' : 'light';
+      } catch {
+        /* cross-origin or canvas issues — keep current tone */
+      }
+    };
+
+    const reveal = (index: number) => {
+      const layer = layers[active];
+      layer.onload = () => {
+        layers.forEach((item) => item.classList.remove('is-active'));
+        layer.classList.add('is-active');
+        tone(layer);
+      };
+      layer.src = images[index];
+      current = index;
+      active = (active + 1) % layers.length;
+    };
+
+    images.forEach((src) => {
+      const preloader = new Image();
+      preloader.src = src;
+    });
+
+    if (layers[0].complete) tone(layers[0]);
+    else layers[0].addEventListener('load', () => tone(layers[0]), { once: true });
+
+    let busy = false;
+    column.addEventListener('mouseenter', () => {
+      if (busy) return;
+      busy = true;
+      let next = current;
+      while (next === current) next = Math.floor(Math.random() * images.length);
+      reveal(next);
+      window.setTimeout(() => {
+        busy = false;
+      }, 350);
+    });
+  }
+
+  if (document.readyState !== 'loading') initGallery();
+  else document.addEventListener('DOMContentLoaded', initGallery);
+</script>
 
 <style>
   .column {
@@ -115,6 +206,65 @@ const { domain } = Astro.props;
     text-underline-offset: 3px;
   }
 
+  .column.has-gallery {
+    position: relative;
+  }
+
+  .gallery {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--bg);
+  }
+
+  .gallery img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .gallery img.is-active {
+    opacity: 1;
+  }
+
+  .column.has-gallery .column-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .column.has-gallery .head {
+    background: transparent;
+  }
+
+  .column.has-gallery .label,
+  .column.has-gallery .kicker,
+  .column.has-gallery .links .text,
+  .column.has-gallery .links .mark {
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
+  }
+
+  .column.has-gallery[data-tone='light'] .links li {
+    border-color: rgba(0, 0, 0, 0.18);
+  }
+
+  .column.has-gallery[data-tone='dark'] .label,
+  .column.has-gallery[data-tone='dark'] .kicker,
+  .column.has-gallery[data-tone='dark'] .links .text,
+  .column.has-gallery[data-tone='dark'] .links .mark {
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  }
+
+  .column.has-gallery[data-tone='dark'] .links li {
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
   @media (max-width: 900px) {
     .column {
       height: auto;
@@ -125,6 +275,38 @@ const { domain } = Astro.props;
 
     .reveal {
       height: 8vh;
+    }
+
+    .column.has-gallery {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery {
+      position: relative;
+      inset: auto;
+      order: -1;
+      height: 42vh;
+    }
+
+    .gallery img {
+      position: absolute;
+    }
+
+    .column.has-gallery .label,
+    .column.has-gallery .kicker,
+    .column.has-gallery .links .text,
+    .column.has-gallery .links .mark,
+    .column.has-gallery[data-tone='dark'] .label,
+    .column.has-gallery[data-tone='dark'] .kicker,
+    .column.has-gallery[data-tone='dark'] .links .text,
+    .column.has-gallery[data-tone='dark'] .links .mark {
+      color: inherit;
+      text-shadow: none;
+    }
+
+    .column.has-gallery[data-tone='dark'] .links li {
+      border-color: var(--line);
     }
   }
 </style>
