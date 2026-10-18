@@ -19,7 +19,7 @@ const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
   {
     gallery && (
       <div class="gallery" data-gallery data-images={JSON.stringify(gallery)}>
-        <img src={gallery[0]} alt="" class="is-active" />
+        <img src={gallery[0]} alt="" />
         <img alt="" />
       </div>
     )
@@ -67,7 +67,8 @@ const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
 
     const layers = Array.from(gallery.querySelectorAll<HTMLImageElement>('img'));
     let active = 0;
-    let current = 0;
+    let current = -1;
+    let hovering = false;
 
     const tone = (image: HTMLImageElement) => {
       try {
@@ -92,6 +93,7 @@ const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
     const reveal = (index: number) => {
       const layer = layers[active];
       layer.onload = () => {
+        if (!hovering) return;
         layers.forEach((item) => item.classList.remove('is-active'));
         layer.classList.add('is-active');
         tone(layer);
@@ -101,16 +103,19 @@ const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
       active = (active + 1) % layers.length;
     };
 
+    const hide = () => {
+      layers.forEach((item) => item.classList.remove('is-active'));
+      column.dataset.tone = 'light';
+    };
+
     images.forEach((src) => {
       const preloader = new Image();
       preloader.src = src;
     });
 
-    if (layers[0].complete) tone(layers[0]);
-    else layers[0].addEventListener('load', () => tone(layers[0]), { once: true });
-
     let busy = false;
     column.addEventListener('mouseenter', () => {
+      hovering = true;
       if (busy) return;
       busy = true;
       let next = current;
@@ -119,6 +124,11 @@ const gallery = domain.hoverImages?.map((image) => url(image)) ?? null;
       window.setTimeout(() => {
         busy = false;
       }, 350);
+    });
+
+    column.addEventListener('mouseleave', () => {
+      hovering = false;
+      hide();
     });
   }
 
