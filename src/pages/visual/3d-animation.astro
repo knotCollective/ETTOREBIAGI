@@ -43,6 +43,27 @@ const thousandVideos = [
     title: 'demo 4',
     note: '0:52',
   },
+  {
+    src: 'videos/thousand-questions-demo-5.mp4',
+    poster: 'videos/thousand-questions-demo-5-poster.jpg',
+    title: 'demo 5',
+    note: '1:15',
+    wide: true,
+  },
+  {
+    src: 'videos/thousand-questions-demo-6.mp4',
+    poster: 'videos/thousand-questions-demo-6-poster.jpg',
+    title: 'demo 6',
+    note: '1:03',
+    wide: true,
+  },
+  {
+    src: 'videos/thousand-questions-demo-7.mp4',
+    poster: 'videos/thousand-questions-demo-7-poster.jpg',
+    title: 'demo 7',
+    note: '1:29',
+    wide: true,
+  },
 ];
 
 const thousandStills = [
@@ -71,7 +92,7 @@ const thousandStills = [
     <div class="project-media">
       {
         thousandVideos.map((vid) => (
-          <div class="video project-video">
+          <div class:list={['video', 'project-video', vid.wide && 'project-video--169']}>
             <div class="caption">
               <h3 class="vtitle">{vid.title}</h3>
               <span class="note">{vid.note}</span>
@@ -188,6 +209,10 @@ const thousandStills = [
 
   .project--aq .project-video .player {
     aspect-ratio: 3456 / 2162;
+  }
+
+  .project--aq .project-video--169 .player {
+    aspect-ratio: 16 / 9;
   }
 
   .video {
